@@ -1,0 +1,39 @@
+{
+  "name": "arcgis-offline-tiles",
+  "version": "1.0.0",
+  "description": "An extension for enabling offline tiles feature in ArcGIS JS SDK",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack -p"
+  },
+  "author": "besLisbeth",
+  "license": "Apache-2.0",
+  "keywords": [
+    "arcgis",
+    "gis",
+    "esri",
+    "offline",
+    "map",
+    "maps",
+    "tiles"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/besLisbeth/arcgis-offline-tiles.git"
+  },
+  "dependencies": {
+    "file-saver": "^2.0.2",
+    "idb": "^4.0.3",
+    "lz-string": "^1.4.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-transform-runtime": "^7.5.0",
+    "@babel/preset-env": "^7.5.4",
+    "@babel/runtime": "^7.5.4",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.35.3",
+    "webpack-cli": "^3.3.5"
+  }
+}
