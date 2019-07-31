@@ -1,39 +1,55 @@
 {
-  "name": "arcgis-offline-tiles",
+  "name": "demo-arcgis-offline-tiles",
   "version": "1.0.0",
-  "description": "An extension for enabling offline tiles feature in ArcGIS JS SDK",
-  "main": "index.js",
-  "scripts": {
-    "build": "webpack -p"
-  },
+  "description": "Demo page for arcgis-offline-tiles extension",
   "author": "besLisbeth",
-  "license": "Apache-2.0",
-  "keywords": [
-    "arcgis",
-    "gis",
-    "esri",
-    "offline",
-    "map",
-    "maps",
-    "tiles"
-  ],
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/besLisbeth/arcgis-offline-tiles.git"
   },
-  "dependencies": {
-    "file-saver": "^2.0.2",
-    "idb": "^4.0.3",
-    "lz-string": "^1.4.4"
+  "scripts": {
+    "start": "webpack-dev-server --config webpack.dev.js",
+    "development": "webpack -d --config webpack.dev.js",
+    "build": "webpack -p --config webpack.prod.js"
+  },
+  "arcgis": {
+    "type": "jsapi"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.4",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@arcgis/webpack-plugin": "4.11.0",
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-transform-modules-amd": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.5.0",
-    "@babel/preset-env": "^7.5.4",
-    "@babel/runtime": "^7.5.4",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "@hot-loader/react-dom": "^16.8.6",
     "babel-loader": "^8.0.6",
-    "webpack": "^4.35.3",
-    "webpack-cli": "^3.3.5"
+    "babel-plugin-styled-components": "^1.10.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.0.0",
+    "file-loader": "^4.0.0",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.7.0",
+    "react-hot-loader": "^4.12.2",
+    "resolve-url-loader": "^3.1.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "styled-components": "^4.3.2",
+    "url-loader": "^2.0.1",
+    "webpack": "^4.35.2",
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-server": "^3.7.2",
+    "webpack-merge": "^4.2.1"
+  },
+  "dependencies": {
+    "@babel/plugin-proposal-decorators": "^7.4.4",
+    "@babel/runtime": "^7.5.4",
+    "mobx": "^5.11.0",
+    "mobx-react": "^6.1.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   }
 }

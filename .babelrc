@@ -1,9 +1,14 @@
 {
   "presets": [
-    ["@babel/env"]
+    "@babel/env",
+    "@babel/react"
   ],
   "plugins": [
+    ["react-hot-loader/babel"],
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
     ["@babel/plugin-proposal-class-properties", {"loose": true}],
+    ["babel-plugin-styled-components", {"fileName": true}],
+    ["@babel/plugin-transform-modules-amd", {"noInterop": false}],
     ["@babel/plugin-transform-runtime", {
       "absoluteRuntime": false,
       "corejs": false,
