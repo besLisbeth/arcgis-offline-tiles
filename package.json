@@ -20,8 +20,10 @@
     "@arcgis/webpack-plugin": "4.11.0",
     "@babel/core": "^7.4.5",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/plugin-transform-modules-amd": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.5.0",
+    "@babel/runtime": "^7.5.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@hot-loader/react-dom": "^16.8.6",
@@ -45,8 +47,6 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
-    "@babel/plugin-proposal-decorators": "^7.4.4",
-    "@babel/runtime": "^7.5.4",
     "mobx": "^5.11.0",
     "mobx-react": "^6.1.1",
     "react": "^16.8.6",
