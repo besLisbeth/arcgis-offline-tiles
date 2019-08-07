@@ -10,7 +10,7 @@ module.exports = env => {
         entry: './src/index.jsx',
         output: {
             path: __dirname + '/dist',
-            publicPath: '/',
+            publicPath: '',
             filename: 'scripts/[name]/[name].[hash].bundle.js',
             chunkFilename: 'scripts/[name]/[name].[chunkhash].bundle.js'
         },
@@ -40,7 +40,8 @@ module.exports = env => {
             ]
         },
         resolve: {
-            modules: [path.resolve(__dirname, '/src'), 'node_modules']
+            modules: [path.resolve(__dirname, '/src'), 'node_modules'],
+            alias: { 'react-dom': '@hot-loader/react-dom' }
         },
 
         plugins: [
@@ -76,6 +77,9 @@ module.exports = env => {
             net: 'empty',
             tls: 'empty',
             dns: 'empty'
+        },
+        performance: {
+            hints: false
         }
     }
 };
