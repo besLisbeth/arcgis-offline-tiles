@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { computed, observable, reaction } from 'mobx';
-import { IndexedDBHelpers } from '../../../../libs/index.js';
+import { IndexedDBHelpers } from 'arcgis-offline-tiles';
 import { IconWrapper, ListItem, ListTitle } from '../elements';
 import Icon from '../../common/Icon';
 

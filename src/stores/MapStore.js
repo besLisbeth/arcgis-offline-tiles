@@ -3,7 +3,7 @@ import Map from 'esri/Map';
 import MapView from 'esri/views/MapView';
 import TileLayer from 'esri/layers/TileLayer';
 import * as watchUtils from 'esri/core/watchUtils';
-import { OfflineLayer, initOfflineFeatures } from '../../libs/index.js';
+import { OfflineLayer, initOfflineFeatures } from 'arcgis-offline-tiles';
 
 export default class MapStore {
 

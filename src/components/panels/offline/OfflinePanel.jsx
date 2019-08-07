@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 import Button from '../../common/Button';
 import FileUpload from './FileUpload.jsx';
-import { TileHelpers, IndexedDBHelpers } from '../../../../libs/index';
+import { TileHelpers, IndexedDBHelpers } from 'arcgis-offline-tiles';
 import { formatBytes } from '../../../utils/fileSize';
 import { callDisposer } from '../../../utils/mobxDisposerHelper';
 import { ErrorString, IconWrapper, PanelTitle, PanelWrapper } from '../elements';
