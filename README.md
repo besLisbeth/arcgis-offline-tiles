@@ -1,5 +1,6 @@
 arcgis-offline-tiles
 =================
+![npm](https://img.shields.io/npm/v/arcgis-offline-tiles)
 
 An extension for saving tiles in the compressed format to the indexedDB and .csv files which enables a feature of using tiles offline in ArcGIS JS API of version 4+.
 This project is based on the **[offline-editor-js](https://github.com/Esri/offline-editor-js)** which is currently not adding new functionality.
