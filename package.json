@@ -1,6 +1,6 @@
 {
   "name": "arcgis-offline-tiles",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An extension for enabling offline tiles feature in ArcGIS JS API",
   "main": "dist/index.js",
   "scripts": {
