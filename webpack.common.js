@@ -10,7 +10,7 @@ module.exports = env => {
         entry: './src/index.jsx',
         output: {
             path: __dirname + '/dist',
-            publicPath: '/',
+            publicPath: '',
             filename: 'scripts/[name]/[name].[hash].bundle.js',
             chunkFilename: 'scripts/[name]/[name].[chunkhash].bundle.js'
         },
