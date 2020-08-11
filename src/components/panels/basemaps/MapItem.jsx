@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { computed, observable, reaction } from 'mobx';
+import { computed, observable, reaction, values } from 'mobx';
 import { IndexedDBHelpers } from 'arcgis-offline-tiles';
 import { IconWrapper, ListItem, ListTitle } from '../elements';
 import Icon from '../../common/Icon';
@@ -22,7 +22,7 @@ export default class MapItem extends Component {
                     await this.setInitialState();
                     this.disposer = reaction;
                 }
-            })
+            }, {delay: 1000});
         }
     }
 
@@ -30,14 +30,14 @@ export default class MapItem extends Component {
         this.disposer && this.disposer.dispose();
     }
 
-    async setInitialState(){
+    async setInitialState() {
         this.isLayerInIndexedDB = await this.basemap.isSavedToIndexedDB();
         this.isOnline = this.basemap.isOnline;
     }
 
     @computed
     get basemap() {
-        if (this.props.mapStore.basemapsModels) {
+        if (values(this.props.mapStore.basemapsModels).length) {
             return this.props.mapStore.basemapsModels.get(this.props.basemapTitle);
         }
     }

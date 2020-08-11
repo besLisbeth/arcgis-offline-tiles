@@ -6,14 +6,16 @@
   "plugins": [
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
     ["@babel/plugin-proposal-class-properties", {"loose": true}],
-    ["babel-plugin-styled-components", {"fileName": true}],
-    ["@babel/plugin-transform-modules-amd", {"noInterop": false}],
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-proposal-export-default-from",
     ["@babel/plugin-transform-runtime", {
       "absoluteRuntime": false,
       "corejs": false,
       "helpers": false,
       "regenerator": true,
       "useESModules": false
-    }]
+    }],
+    ["babel-plugin-styled-components", {"fileName": true,  "displayName": true}],
+    ["@babel/plugin-transform-modules-amd", {"noInterop" : false}]
   ]
 }

@@ -44,7 +44,6 @@ export default class MapStore {
             this.map.layers.add(offlineLayer);
             this.basemapsModels.set(title, offlineLayer);
         })
-
     }
 
     @action.bound

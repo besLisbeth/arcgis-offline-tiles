@@ -1,11 +1,35 @@
 import esriConfig from "esri/config";
 
-const DEFAULT_WORKER_URL = "https://js.arcgis.com/4.12/";
-const DEFAULT_LOADER_URL = `${DEFAULT_WORKER_URL}dojo/dojo-lite.js`;
+const DEFAULT_WORKER_URL = location.origin;
 
-esriConfig.workers.loaderUrl = DEFAULT_LOADER_URL;
+esriConfig.workers.loaderUrl = `${location.origin}dojo/dojo-lite.js`;
 esriConfig.workers.loaderConfig = {
     baseUrl: `${DEFAULT_WORKER_URL}dojo`,
+    has: {
+        'dojo-config-api': 0,             // Don't need the config API code in the embedded Dojo loader
+        'esri-webpack': 1,
+        'esri-promise-compatibility': 1,
+        'esri-workers-for-memory-layers': 0,
+        'esri-featurelayer-webgl': 0,
+        'esri-workers': 0,
+        'esri-built': 0
+    },
+    aliases: [
+        [/^webgl-engine/, function() {
+            return 'esri/views/3d/webgl-engine';
+        }],
+        [/^engine/, function() {
+            return 'esri/views/3d/webgl-engine';
+        }]
+    ],
+    map: {
+        'globalize': {
+            'cldr': 'cldrjs/dist/cldr',
+            'cldr/event': 'cldrjs/dist/cldr/event',
+            'cldr/supplemental': 'cldrjs/dist/cldr/supplemental',
+            'cldr/unresolved': 'cldrjs/dist/cldr/unresolved'
+        }
+    },
     packages: [
         { name: "esri", location: `${DEFAULT_WORKER_URL}esri` },
         { name: "dojo", location: `${DEFAULT_WORKER_URL}dojo` },
