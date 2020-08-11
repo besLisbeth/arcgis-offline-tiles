@@ -8,13 +8,13 @@ This project is based on the **[offline-editor-js](https://github.com/Esri/offli
 # Foreword
 
 This project is built as an extension tool which uses an API of version 4+ bundled into the source repo, doesn't depending on whether it will be
-**[an online resource](https://js.arcgis.com/4.12/)** or custom build. That excludes the possibility of ArcGIS code duplication.
+**[an online resource](https://js.arcgis.com/4.16/)** or custom build. That excludes the possibility of ArcGIS code duplication.
 
 For the ArcGIS SDK of version 3+, please, have a look at the **[original GitHub repo](https://github.com/Esri/offline-editor-js)** build by Esri developers.
 
 # Demo 
 
-Demo page is available here: **[https://beslisbeth.github.io/arcgis-offline-tiles/]()**. 
+Demo page is available **[here](https://beslisbeth.github.io/arcgis-offline-tiles/)**. 
 For the source code of the demo page, please switch to the branch **[demo-sources](https://github.com/besLisbeth/arcgis-offline-tiles/tree/demo-sources)**.
 
 
