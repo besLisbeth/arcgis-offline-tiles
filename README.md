@@ -1,7 +1,7 @@
 Arcgis Offline Tiles Demo Sources
 =========================
 
-This is a repo with sources for **[https://beslisbeth.github.io/arcgis-offline-tiles/]()** that  was created as an example of using the currently available functionality of `arcgis-offline-tiles`.
+This is a repo with sources for **[demo page](https://beslisbeth.github.io/arcgis-offline-tiles/)** that  was created as an example of using the currently available functionality of `arcgis-offline-tiles`.
 
 # Dependencies
 Project includes dependencies on:
