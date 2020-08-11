@@ -2,6 +2,7 @@ import WebTileLayer from 'esri/layers/WebTileLayer';
 import TileLayer from 'esri/layers/TileLayer';
 import esriRequest from 'esri/request';
 import Point from 'esri/geometry/Point';
+import * as watchUtils from 'esri/core/watchUtils';
 import * as promiseUtils from 'esri/core/promiseUtils';
 import FileSaver from 'file-saver';
 import LZString from 'lz-string';
@@ -39,32 +40,37 @@ export default function OfflineLayer(Layer, props) {
         if (!indexedDbService) {
             throw new Error(`Init offline features once with 'initOfflineFeatures' function before creating OfflineLayer`)
         }
-        return new (OfflineLayerWrapper(Layer))(props, indexedDbService);
+        const ExtendedLayer = OfflineLayerMixin(Layer);
+        const offlineLayer = new ExtendedLayer(props);
+        offlineLayer.init(indexedDbService);
+        return offlineLayer;
     } else {
         throw new Error('Layer is not TileLayer or WebTileLayer');
     }
 }
 
-const OfflineLayerWrapper = Layer => class extends Layer {
+const OfflineLayerMixin = Layer => Layer.createSubclass({
+    properties: {
+        lastTileUrl: '',
+        isOnline: true,
+        fullExtent: webTileFullExtent, // options 'fullExtent' and 'tileInfo' are provided in 'esri/layers/WebTileLayer' but not provided in 'esri/layers/TileLayer'
+        tileInfo: webTileInfo, // due to the fact, that they are needed for internal computation - 'esri/layers/TileLayer' is expanded with those static properties
+        offlineKey: ''
+    },
 
-    lastTileUrl = '';
-    isOnline = true;
-    fullExtent = webTileFullExtent; // options 'fullExtent' and 'tileInfo' are provided in 'esri/layers/WebTileLayer' but not provided in 'esri/layers/TileLayer'
-    tileInfo = webTileInfo;         // due to the fact, that they are needed for internal computation - 'esri/layers/TileLayer' is expanded with those static properties
-    offlineKey = '';
-
-    constructor(props, indexedDbService) {
-        super(props);
-        this.extendTileLOD();
-        if (isIndexedDBSupported()) {
-            this.offlineKey = this.title || this.id;
-            OfflineLayerDBService.init(this.offlineKey, indexedDbService, offlineConfig.objectStoreName);
-        }
-    }
+    init: function (indexedDbService) {
+        watchUtils.whenTrue(this, 'loaded', () => {
+            this.extendTileLOD();
+            if (isIndexedDBSupported()) {
+                this.offlineKey = this.title || this.id;
+                OfflineLayerDBService.init(this.offlineKey, indexedDbService, OBJECT_STORE_NAME);
+            }
+        })
+    },
 
     // This is an overwritten method from Layer which can be either 'esri/layers/TileLayer' or 'esri/layers/WebTileLayer'
     // and proposed only for internal usage
-    fetchTile(level, row, col, options) {
+    fetchTile: function (level, row, col, options) {
         // call getTileUrl method from Layer is used for correct URL construction
         this.lastTileUrl = this.getTileUrl(level, row, col).split('?')[0];
 
@@ -88,9 +94,9 @@ const OfflineLayerWrapper = Layer => class extends Layer {
                     });
             }).then(image => this.createCanvasImage(image, this.tileInfo.size[0]));
         }
-    };
+    },
 
-    createCanvasImage(img = null, size) {
+    createCanvasImage: function (img = null, size) {
         if (!img && offlineConfig.showNoTile) {
             img = document.createElement('img');
             img.src = offlineConfig.noTileIcon;
@@ -103,12 +109,12 @@ const OfflineLayerWrapper = Layer => class extends Layer {
         context.drawImage(img, 0, 0, size, size);
 
         return canvas;
-    }
+    },
 
-    goOffline = () => {
+    goOffline: function () {
         this.isOnline = false;
         this.refresh();
-    };
+    },
 
     /**
      * This method puts the layer in online mode. When in online mode, the layer will
@@ -116,39 +122,39 @@ const OfflineLayerWrapper = Layer => class extends Layer {
      * If there is no internet connectivity the tiles may appear thanks to the browsers cache,
      * but no attempt will be made to look up tiles in the local database.
      */
-    goOnline = () => {
+    goOnline: function () {
         this.isOnline = true;
         this.refresh();
-    };
+    },
 
     /**
      * This method checks if there are any tiles saved to local cache.
      * @returns {Promise<boolean>}
      */
-    async isSavedToIndexedDB() {
-        let tiles = await OfflineLayerDBService.getAllTiles(this.offlineKey).catch(() => {});
+    isSavedToIndexedDB: async function () {
+        let tiles = await OfflineLayerDBService.getAllTiles(this.offlineKey);
         return !!(tiles && tiles.length);
-    }
+    },
 
     /**
      * Clears the local cache of tiles.
      * @returns {*|Promise<*>}
      */
-    deleteAllTiles = () => {
+    deleteAllTiles: function () {
         return OfflineLayerDBService.removeAllTiles(this.offlineKey);
-    };
+    },
 
     /**
      * Saves tile cache into a csv format.
      * @param fileName
      */
-    async saveToFile(fileName) {
+    saveToFile: async function (fileName) {
         const records = await OfflineLayerDBService.getAllTiles(this.offlineKey);
         const csv = [];
         csv.push('url,img');
         records.forEach(({ url, img }) => csv.push(url + ',' + Base64String.decompress(img)));
         FileSaver.saveAs(new Blob([csv.join('\r\n')], { type: 'text/plain;charset=utf-16' }), fileName);
-    };
+    },
 
     /**
      * This method is a generator for the possibility to stop the reading tiles from a csv file into local tile cache.
@@ -156,7 +162,7 @@ const OfflineLayerWrapper = Layer => class extends Layer {
      * @param progressCallback
      * @returns {Promise<*>}
      */
-    async loadFromFile(file, progressCallback) {
+    loadFromFile: async function (file, progressCallback) {
         return new Promise((resolve, reject) => {
             if ((window).File && (window).FileReader && (window).FileList && (window).Blob) {
                 const reader = new FileReader();
@@ -187,11 +193,11 @@ const OfflineLayerWrapper = Layer => class extends Layer {
                 return reject('The File APIs are not fully supported in this browser.');
             }
         })
-    };
+    },
 
-    uploadTile({ level, row, col }) {
+    uploadTile: function ({ level, row, col }) {
         return this.saveTileToDB(this.getTileUrl(level, row, col));
-    }
+    },
 
     /**
      * This method is a generator for the possibility to stop the uploading of tiles to local cache
@@ -201,7 +207,7 @@ const OfflineLayerWrapper = Layer => class extends Layer {
      * @param progressCallback
      * @returns {AsyncIterableIterator<any>}
      */
-    async* uploadTilesToIndexedDb(minLevel, maxLevel, extent, progressCallback) {
+    uploadTilesToIndexedDb: async function* (minLevel, maxLevel, extent, progressCallback) {
         const cells = [];
         for (let level = minLevel; level <= maxLevel; level++) {
             TileHelpers.getCellsInExtent(this.tileInfo, extent, level).forEach(cell => {
@@ -220,16 +226,16 @@ const OfflineLayerWrapper = Layer => class extends Layer {
                     });
                 });
         }
-    };
+    },
 
-    getContainingTileCoords(tileInfo, point, resolution) {
+    getContainingTileCoords: function (tileInfo, point, resolution) {
         return {
             row: Math.floor((tileInfo.origin.y - point.y) / (tileInfo.size[0] * resolution)),
             col: Math.floor((point.x - tileInfo.origin.x) / (tileInfo.size[1] * resolution))
         }
-    }
+    },
 
-    extendTileLOD() {
+    extendTileLOD: function () {
         const minExtentPoint = new Point({
             x: this.fullExtent.xmin,
             y: this.fullExtent.ymax,
@@ -252,9 +258,9 @@ const OfflineLayerWrapper = Layer => class extends Layer {
                 lod.cols = 256;
             });
         return this.tileInfo.lods;
-    }
+    },
 
-    saveTileToDB(url) {
+    saveTileToDB: function (url) {
         return new Promise((resolve, reject) => {
             const urlWithoutQuery = url.split('?')[0];
             const req = new XMLHttpRequest();
@@ -279,5 +285,5 @@ const OfflineLayerWrapper = Layer => class extends Layer {
             };
             req.send(null);
         })
-    };
-};
+    }
+});
