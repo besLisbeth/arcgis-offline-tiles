@@ -8,9 +8,6 @@ export default function NavigationBar() {
         <NavBar>
             <Brand href={'/'}>{'arcgis offline tiles demo'}</Brand>
             <ButtonSection>
-                <NavButton href={'https://twitter.com/beslisbeth'}>
-                    <Icon name={'twitter'}/>
-                </NavButton>
                 <NavButton href={'https://github.com/besLisbeth/arcgis-offline-tiles'}>
                     <Icon name={'github'}/>
                 </NavButton>
